@@ -14,7 +14,7 @@ npm install --save 5no-pg-builder
 SELECT
 
 ```js
-const Manager = require('5no-pg-builder')()
+const Manager = require('5no-pg-builder')
 
 const Users = Manager.build({
     table: "users"
