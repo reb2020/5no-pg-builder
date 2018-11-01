@@ -1,6 +1,6 @@
 {
   "name": "5no-pg-builder",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple query builder for PostgreSQL",
   "main": "compiled/index.js",
   "scripts": {
@@ -13,6 +13,15 @@
   },
   "author": "reb2020",
   "license": "ISC",
+  "keywords": [
+    "postgresql",
+    "sql",
+    "query",
+    "builder",
+    "parameter",
+    "param",
+    "parameterized"
+  ],
   "homepage": "https://github.com/reb2020/5no-pg-builder#readme",
   "repository": {
     "type": "git",
