@@ -14,6 +14,18 @@ class Manager {
 
       return builder.operations
     }
+
+    begin = () => {
+      return this.query('BEGIN')
+    }
+
+    commit = () => {
+      return this.query('COMMIT')
+    }
+
+    rollback = () => {
+      return this.query('ROLLBACK')
+    }
 }
 
 module.exports = new Manager()

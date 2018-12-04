@@ -39,6 +39,18 @@ var Manager = function Manager() {
 
     return builder.operations;
   };
+
+  this.begin = function () {
+    return _this.query('BEGIN');
+  };
+
+  this.commit = function () {
+    return _this.query('COMMIT');
+  };
+
+  this.rollback = function () {
+    return _this.query('ROLLBACK');
+  };
 };
 
 module.exports = new Manager();
