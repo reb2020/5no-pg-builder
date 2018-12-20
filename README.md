@@ -1,4 +1,3 @@
-
 Simple query builder for PostgreSQL
 
 ## Install
@@ -7,6 +6,14 @@ Simple query builder for PostgreSQL
 
 ```sh
 npm install --save 5no-pg-builder
+```
+
+## .env
+
+```js
+DATABASE_URL=postgres://test:123123@127.0.0.1:5432/testDB
+DATABASE_SSL=false
+DATABASE_QUERY_LOG=true
 ```
 
 ## Examples
