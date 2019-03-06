@@ -5,9 +5,14 @@ export default function({ type = 'AND', field, operator = '=', values, group = n
     values = [values]
   }
 
-  values.forEach((value) => {
-    boundValues.push(this.helpers.bound(value))
-  })
+  if (typeof values.builder !== 'undefined') {
+    boundValues.push(`${values.builder.instance().helpers.alias()}.${values.field}`)
+    values = null
+  } else {
+    values.forEach((value) => {
+      boundValues.push(this.helpers.bound(value))
+    })
+  }
 
   return {
     group: group,

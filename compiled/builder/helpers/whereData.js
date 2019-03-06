@@ -24,9 +24,14 @@ exports.default = function (_ref) {
     values = [values];
   }
 
-  values.forEach(function (value) {
-    boundValues.push(_this.helpers.bound(value));
-  });
+  if (typeof values.builder !== 'undefined') {
+    boundValues.push(values.builder.instance().helpers.alias() + '.' + values.field);
+    values = null;
+  } else {
+    values.forEach(function (value) {
+      boundValues.push(_this.helpers.bound(value));
+    });
+  }
 
   return {
     group: group,

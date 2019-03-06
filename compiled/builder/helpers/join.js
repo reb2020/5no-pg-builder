@@ -7,22 +7,42 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = function () {
   var _this = this;
 
+  var isUpdateMethod = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+
   var joinString = [];
+  var index = 0;
 
   if (this.state.join) {
     Object.keys(this.state.join).forEach(function (key) {
       var joinData = _this.state.join[key];
 
-      switch (joinData.type) {
-        case 'LEFT':
-          joinString.push('LEFT JOIN ' + joinData.secondaryTable + ' ON ' + joinData.primaryTableField + ' = ' + joinData.secondaryTableField);
-          break;
-        case 'RIGHT':
-          joinString.push('RIGHT JOIN ' + joinData.secondaryTable + ' ON ' + joinData.primaryTableField + ' = ' + joinData.secondaryTableField);
-          break;
-        case 'INNER':
-          joinString.push('INNER JOIN ' + joinData.secondaryTable + ' ON ' + joinData.primaryTableField + ' = ' + joinData.secondaryTableField);
-          break;
+      if (isUpdateMethod === true && index === 0) {
+        if (!_this.state.where) {
+          _this.state.where = [];
+        }
+
+        joinString.push('FROM ' + joinData.secondaryTable);
+
+        _this.state.where.push(_this.helpers.whereData({
+          field: joinData.primaryTableFieldName,
+          operator: '=',
+          values: {
+            builder: joinData.builder,
+            field: joinData.secondaryTableFieldName
+          }
+        }));
+      } else {
+        switch (joinData.type) {
+          case 'LEFT':
+            joinString.push('LEFT JOIN ' + joinData.secondaryTable + ' ON ' + joinData.primaryTableField + ' = ' + joinData.secondaryTableField);
+            break;
+          case 'RIGHT':
+            joinString.push('RIGHT JOIN ' + joinData.secondaryTable + ' ON ' + joinData.primaryTableField + ' = ' + joinData.secondaryTableField);
+            break;
+          case 'INNER':
+            joinString.push('INNER JOIN ' + joinData.secondaryTable + ' ON ' + joinData.primaryTableField + ' = ' + joinData.secondaryTableField);
+            break;
+        }
       }
 
       joinData.secondaryTableJoin.forEach(function (secondaryJoin) {
@@ -75,6 +95,8 @@ exports.default = function () {
 
         _this.state.having.push(secondaryHaving);
       });
+
+      index++;
     });
   }
 

@@ -18,7 +18,7 @@ exports.default = function () {
           whereConditional = whereData.table + '.' + whereData.field + ' IN (' + whereData.boundValues.join(',') + ')';
           break;
         default:
-          whereConditional = whereData.table + '.' + whereData.field + ' ' + whereData.operator + ' ' + whereData.boundValues;
+          whereConditional = whereData.table + '.' + whereData.field + ' ' + whereData.operator + ' ' + whereData.boundValues.pop();
       }
 
       if (whereData.type === 'OR') {

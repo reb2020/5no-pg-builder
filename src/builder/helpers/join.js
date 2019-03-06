@@ -1,20 +1,38 @@
-export default function() {
+export default function(isUpdateMethod = false) {
   let joinString = []
+  let index = 0
 
   if (this.state.join) {
     Object.keys(this.state.join).forEach((key) => {
       const joinData = this.state.join[key]
 
-      switch (joinData.type) {
-        case 'LEFT':
-          joinString.push(`LEFT JOIN ${joinData.secondaryTable} ON ${joinData.primaryTableField} = ${joinData.secondaryTableField}`)
-          break
-        case 'RIGHT':
-          joinString.push(`RIGHT JOIN ${joinData.secondaryTable} ON ${joinData.primaryTableField} = ${joinData.secondaryTableField}`)
-          break
-        case 'INNER':
-          joinString.push(`INNER JOIN ${joinData.secondaryTable} ON ${joinData.primaryTableField} = ${joinData.secondaryTableField}`)
-          break
+      if (isUpdateMethod === true && index === 0) {
+        if (!this.state.where) {
+          this.state.where = []
+        }
+
+        joinString.push(`FROM ${joinData.secondaryTable}`)
+
+        this.state.where.push(this.helpers.whereData({
+          field: joinData.primaryTableFieldName,
+          operator: '=',
+          values: {
+            builder: joinData.builder,
+            field: joinData.secondaryTableFieldName,
+          },
+        }))
+      } else {
+        switch (joinData.type) {
+          case 'LEFT':
+            joinString.push(`LEFT JOIN ${joinData.secondaryTable} ON ${joinData.primaryTableField} = ${joinData.secondaryTableField}`)
+            break
+          case 'RIGHT':
+            joinString.push(`RIGHT JOIN ${joinData.secondaryTable} ON ${joinData.primaryTableField} = ${joinData.secondaryTableField}`)
+            break
+          case 'INNER':
+            joinString.push(`INNER JOIN ${joinData.secondaryTable} ON ${joinData.primaryTableField} = ${joinData.secondaryTableField}`)
+            break
+        }
       }
 
       joinData.secondaryTableJoin.forEach((secondaryJoin) => {
@@ -67,6 +85,8 @@ export default function() {
 
         this.state.having.push(secondaryHaving)
       })
+
+      index++
     })
   }
 

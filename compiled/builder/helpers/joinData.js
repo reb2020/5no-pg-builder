@@ -15,8 +15,11 @@ exports.default = function (_ref) {
 
   var join = {
     type: type,
+    builder: builder,
     secondaryTable: secondaryTable.helpers.table(true),
+    primaryTableFieldName: primaryTableField,
     primaryTableField: this.helpers.field(primaryTableField),
+    secondaryTableFieldName: secondaryTableField,
     secondaryTableField: secondaryTable.helpers.field(secondaryTableField),
     secondaryTableJoin: secondaryTable.helpers.join(),
     secondaryTableFields: secondaryTable.state.fields || [],

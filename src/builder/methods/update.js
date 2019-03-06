@@ -10,6 +10,12 @@ export default function() {
     this.sql.push(update)
   }
 
+  const joins = this.helpers.join(true)
+
+  joins.forEach((join) => {
+    this.sql.push(join)
+  })
+
   const where = this.helpers.where()
   if (where) {
     this.sql.push(where)

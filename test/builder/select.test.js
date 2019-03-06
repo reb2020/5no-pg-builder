@@ -391,6 +391,31 @@ describe('Builder', () => {
             "t"
             ])
     })
+    
+    it('with inner join and where by field', async () => {
+
+        const SelectQueryInfo = Manager.build({
+            table: "users_info",
+            schema: "custom"
+        }).select(["*"]).where('status', '=', 't').order('created_at', 'DESC')
+
+        const SelectQuery = Manager.build({
+            table: "users",
+            alias: "Testusers",
+            schema: "custom"
+        }).select(["email", "first_name", "last_name AS FN"])
+        .innerJoin(SelectQueryInfo, 'id', 'users_id')
+        .where('first_name', '=', {
+            builder: SelectQueryInfo,
+            field: 'users_id'
+        })
+        .query()
+
+        expect(SelectQuery.query).to.eql('SELECT Testusers.email, Testusers.first_name, Testusers.last_name AS FN, users_info.* FROM custom.users AS Testusers INNER JOIN custom.users_info AS users_info ON Testusers.id = users_info.users_id WHERE Testusers.first_name = users_info.users_id AND users_info.status = $1 ORDER BY users_info.created_at DESC')
+        expect(SelectQuery.vars).to.eql([
+            "t"
+            ])
+    })
    
     it('with where and group', async () => {
         const SelectQuery = Manager.build({

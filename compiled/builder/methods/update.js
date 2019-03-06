@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function () {
+  var _this = this;
+
   this.sql.push('UPDATE');
 
   this.sql.push(this.helpers.table(true));
@@ -15,6 +17,12 @@ exports.default = function () {
   if (update) {
     this.sql.push(update);
   }
+
+  var joins = this.helpers.join(true);
+
+  joins.forEach(function (join) {
+    _this.sql.push(join);
+  });
 
   var where = this.helpers.where();
   if (where) {

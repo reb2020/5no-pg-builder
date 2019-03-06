@@ -79,5 +79,37 @@ describe('Builder', () => {
             "123"
             ])
     })
+
+    it('simple query with join', async () => {
+
+        const SelectQueryInfo = Manager.build({
+            table: "users_info",
+            schema: "custom"
+        }).select(["*"])
+
+        const data = {
+            email: 'test@test.a.a',
+            first_name: {
+                builder: SelectQueryInfo,
+                field: 'users_id',
+            }
+        }
+
+        const SelectQuery = Manager.build({
+            table: "user",
+            alias: "TestUser",
+            schema: "custom"
+        }).update(data)
+        .innerJoin(SelectQueryInfo, 'id', 'users_id')
+        .where("id", "=", "123")
+        .returning(['email'])
+        .query()
+
+        expect(SelectQuery.query).to.eql('UPDATE custom.user AS TestUser SET email = $1, first_name = users_info.users_id FROM custom.users_info AS users_info WHERE TestUser.id = $2 AND TestUser.id = users_info.users_id RETURNING TestUser.email')
+        expect(SelectQuery.vars).to.eql([
+            "test@test.a.a",
+            "123"
+            ])
+    })
   })
 })
