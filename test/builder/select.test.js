@@ -157,6 +157,22 @@ describe('Builder', () => {
             ])
     })
 
+    it('with jsonb where', async () => {
+
+        const SelectQuery = Manager.build({
+            table: "users",
+            alias: "Testusers",
+            schema: "custom"
+        }).select(["email", 'personalised->>\'first_name\'', "last_name AS FN"])
+        .where('personalised->>\'first_name\'', '=', 'first_name_test')
+        .query()
+
+        expect(SelectQuery.query).to.eql("SELECT Testusers.email, Testusers.personalised->>'first_name', Testusers.last_name AS FN FROM custom.users AS Testusers WHERE Testusers.personalised->>'first_name' = $1")
+        expect(SelectQuery.vars).to.eql([
+            "first_name_test"
+            ])
+    })
+
     it('with order', async () => {
 
         const SelectQuery = Manager.build({

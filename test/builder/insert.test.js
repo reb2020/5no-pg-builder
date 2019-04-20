@@ -17,7 +17,10 @@ describe('Builder', () => {
         const data = {
             id: '123',
             email: 'test@test.a.a',
-            first_name: 'Test'
+            first_name: 'Test',
+            personalised: {
+              test: 100
+            }
         }
 
         const SelectQuery = Manager.build({
@@ -28,11 +31,12 @@ describe('Builder', () => {
         .returning()
         .query()
 
-        expect(SelectQuery.query).to.eql('INSERT INTO custom.user (id, email, first_name) VALUES ($1, $2, $3) RETURNING *')
+        expect(SelectQuery.query).to.eql('INSERT INTO custom.user (id, email, first_name, personalised) VALUES ($1, $2, $3, $4) RETURNING *')
         expect(SelectQuery.vars).to.eql([
             "123",
             "test@test.a.a",
-            "Test"
+            "Test",
+            "{\"test\":100}"
             ])
     })
   })
