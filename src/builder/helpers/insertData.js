@@ -4,7 +4,7 @@ export default function(data) {
 
   Object.keys(data).forEach((field) => {
     fields.push(field)
-    values.push(this.helpers.bound(data[field]))
+    values.push(data[field] === null ? 'NULL' : this.helpers.bound(data[field]))
   })
 
   return {

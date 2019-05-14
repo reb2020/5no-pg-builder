@@ -18,6 +18,7 @@ describe('Builder', () => {
             id: '123',
             email: 'test@test.a.a',
             first_name: 'Test',
+            last_name: null,
             personalised: {
               test: 100
             }
@@ -31,7 +32,7 @@ describe('Builder', () => {
         .returning()
         .query()
 
-        expect(SelectQuery.query).to.eql('INSERT INTO custom.user (id, email, first_name, personalised) VALUES ($1, $2, $3, $4) RETURNING *')
+        expect(SelectQuery.query).to.eql('INSERT INTO custom.user (id, email, first_name, last_name, personalised) VALUES ($1, $2, $3, NULL, $4) RETURNING *')
         expect(SelectQuery.vars).to.eql([
             "123",
             "test@test.a.a",

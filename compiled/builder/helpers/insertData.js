@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
@@ -12,7 +12,7 @@ exports.default = function (data) {
 
   Object.keys(data).forEach(function (field) {
     fields.push(field);
-    values.push(_this.helpers.bound(data[field]));
+    values.push(data[field] === null ? 'NULL' : _this.helpers.bound(data[field]));
   });
 
   return {

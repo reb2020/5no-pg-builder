@@ -1,16 +1,16 @@
 export default function({ type = 'AND', field, operator = '=', values, group = null }) {
   let boundValues = []
 
-  if (typeof values === 'undefined' || typeof values !== 'object') {
+  if (values === null || typeof values === 'undefined' || typeof values !== 'object') {
     values = [values]
   }
 
-  if (typeof values.builder !== 'undefined') {
+  if (values !== null && typeof values.builder !== 'undefined') {
     boundValues.push(`${values.builder.instance().helpers.alias()}.${values.field}`)
     values = null
   } else {
     values.forEach((value) => {
-      boundValues.push(this.helpers.bound(value))
+      boundValues.push(value === null ? 'NULL' : this.helpers.bound(value))
     })
   }
 
@@ -19,7 +19,7 @@ export default function({ type = 'AND', field, operator = '=', values, group = n
     type: type,
     field: field,
     table: this.helpers.alias(),
-    operator: operator.toLowerCase(),
+    operator: ['is', 'is not'].includes(operator.toLowerCase()) ? operator.toUpperCase() : operator.toLowerCase(),
     values: values,
     boundValues: boundValues,
   }

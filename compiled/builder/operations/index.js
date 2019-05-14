@@ -36,6 +36,14 @@ var _whereOr = require('./whereOr');
 
 var _whereOr2 = _interopRequireDefault(_whereOr);
 
+var _whereIsNull = require('./whereIsNull');
+
+var _whereIsNull2 = _interopRequireDefault(_whereIsNull);
+
+var _whereIsNotNull = require('./whereIsNotNull');
+
+var _whereIsNotNull2 = _interopRequireDefault(_whereIsNotNull);
+
 var _limit = require('./limit');
 
 var _limit2 = _interopRequireDefault(_limit);
@@ -94,6 +102,8 @@ exports.default = {
   where: _where2.default,
   whereIn: _whereIn2.default,
   whereOr: _whereOr2.default,
+  whereIsNull: _whereIsNull2.default,
+  whereIsNotNull: _whereIsNotNull2.default,
   order: _order2.default,
   limit: _limit2.default,
   distinct: _distinct2.default,

@@ -54,7 +54,7 @@ export default function(isUpdateMethod = false) {
         let boundValues = []
 
         secondaryWhere.values.forEach((value) => {
-          boundValues.push(this.helpers.bound(value))
+          boundValues.push(value === null ? 'NULL' : this.helpers.bound(value))
         })
 
         secondaryWhere.boundValues = boundValues

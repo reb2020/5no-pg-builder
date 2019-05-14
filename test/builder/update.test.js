@@ -16,7 +16,8 @@ describe('Builder', () => {
 
         const data = {
             email: 'test@test.a.a',
-            first_name: 'Test'
+            first_name: 'Test',
+            last_name: null
         }
 
         const SelectQuery = Manager.build({
@@ -26,7 +27,7 @@ describe('Builder', () => {
         }).update(data)
         .query()
 
-        expect(SelectQuery.query).to.eql('UPDATE custom.user AS TestUser SET email = $1, first_name = $2')
+        expect(SelectQuery.query).to.eql('UPDATE custom.user AS TestUser SET email = $1, first_name = $2, last_name = NULL')
         expect(SelectQuery.vars).to.eql([
             "test@test.a.a",
             "Test"
@@ -102,10 +103,11 @@ describe('Builder', () => {
         }).update(data)
         .innerJoin(SelectQueryInfo, 'id', 'users_id')
         .where("id", "=", "123")
+        .whereIsNull('first_name')
         .returning(['email'])
         .query()
 
-        expect(SelectQuery.query).to.eql('UPDATE custom.user AS TestUser SET email = $1, first_name = users_info.users_id FROM custom.users_info AS users_info WHERE TestUser.id = $2 AND TestUser.id = users_info.users_id RETURNING TestUser.email')
+        expect(SelectQuery.query).to.eql('UPDATE custom.user AS TestUser SET email = $1, first_name = users_info.users_id FROM custom.users_info AS users_info WHERE TestUser.id = $2 AND TestUser.first_name IS NULL AND TestUser.id = users_info.users_id RETURNING TestUser.email')
         expect(SelectQuery.vars).to.eql([
             "test@test.a.a",
             "123"

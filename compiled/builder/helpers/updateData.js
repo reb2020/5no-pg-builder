@@ -12,10 +12,10 @@ exports.default = function (data) {
 
   Object.keys(data).forEach(function (field) {
     fields.push(field);
-    if (typeof data[field].builder !== 'undefined') {
+    if (data[field] !== null && typeof data[field].builder !== 'undefined') {
       values.push(data[field].builder.instance().helpers.alias() + '.' + data[field].field);
     } else {
-      values.push(_this.helpers.bound(data[field]));
+      values.push(data[field] === null ? 'NULL' : _this.helpers.bound(data[field]));
     }
   });
 

@@ -64,7 +64,7 @@ exports.default = function () {
         var boundValues = [];
 
         secondaryWhere.values.forEach(function (value) {
-          boundValues.push(_this.helpers.bound(value));
+          boundValues.push(value === null ? 'NULL' : _this.helpers.bound(value));
         });
 
         secondaryWhere.boundValues = boundValues;

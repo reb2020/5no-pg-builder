@@ -111,6 +111,36 @@ describe('Builder', () => {
         expect(SelectQuery.query).to.eql('SELECT Testusers.email, Testusers.first_name, Testusers.last_name AS FN FROM custom.users AS Testusers WHERE Testusers.email = $1 OR Testusers.email = $2')
         expect(SelectQuery.vars).to.eql([ 'test', 'test1' ])
     })
+    
+    it('with some whereIsNull', async () => {
+
+        const SelectQuery = Manager.build({
+            table: "users",
+            alias: "Testusers",
+            schema: "custom"
+        }).select(["email", "first_name", "last_name AS FN"])
+        .where('email', '=', 'test')
+        .whereIsNull('first_name')
+        .query()
+
+        expect(SelectQuery.query).to.eql('SELECT Testusers.email, Testusers.first_name, Testusers.last_name AS FN FROM custom.users AS Testusers WHERE Testusers.email = $1 AND Testusers.first_name IS NULL')
+        expect(SelectQuery.vars).to.eql([ 'test' ])
+    })
+    
+    it('with some whereIsNotNull', async () => {
+
+        const SelectQuery = Manager.build({
+            table: "users",
+            alias: "Testusers",
+            schema: "custom"
+        }).select(["email", "first_name", "last_name AS FN"])
+        .where('email', '=', 'test')
+        .whereIsNotNull('first_name')
+        .query()
+
+        expect(SelectQuery.query).to.eql('SELECT Testusers.email, Testusers.first_name, Testusers.last_name AS FN FROM custom.users AS Testusers WHERE Testusers.email = $1 AND Testusers.first_name IS NOT NULL')
+        expect(SelectQuery.vars).to.eql([ 'test' ])
+    })
 
     it('with couple of whereOr', async () => {
 
@@ -211,11 +241,13 @@ describe('Builder', () => {
         .whereIn('last_name', ['last_name1', 'last_name2'])
         .whereOr('email', '=', 'test')
         .whereOr('email', '=', 'test1')
+        .whereIsNull('first_name')
+        .whereIsNotNull('email')
         .order('email', 'ASC')
         .order('first_name', 'DESC')
         .query()
 
-        expect(SelectQuery.query).to.eql('SELECT Testusers.email, Testusers.first_name, Testusers.last_name AS FN FROM custom.users AS Testusers WHERE Testusers.first_name = $1 AND Testusers.last_name IN ($2,$3) AND (Testusers.email = $4 OR Testusers.email = $5) ORDER BY Testusers.email ASC, Testusers.first_name DESC')
+        expect(SelectQuery.query).to.eql('SELECT Testusers.email, Testusers.first_name, Testusers.last_name AS FN FROM custom.users AS Testusers WHERE Testusers.first_name = $1 AND Testusers.last_name IN ($2,$3) AND Testusers.first_name IS NULL AND Testusers.email IS NOT NULL AND (Testusers.email = $4 OR Testusers.email = $5) ORDER BY Testusers.email ASC, Testusers.first_name DESC')
         expect(SelectQuery.vars).to.eql([
             "first_name_test",
             "last_name1",
@@ -390,7 +422,11 @@ describe('Builder', () => {
         const SelectQueryInfo = Manager.build({
             table: "users_info",
             schema: "custom"
-        }).select(["*"]).where('status', '=', 't').order('created_at', 'DESC')
+        }).select(["*"])
+        .where('status', '=', 't')
+        .whereIsNull('first_name')
+        .whereIsNotNull('status')
+        .order('created_at', 'DESC')
 
         const SelectQuery = Manager.build({
             table: "users",
@@ -399,9 +435,10 @@ describe('Builder', () => {
         }).select(["email", "first_name", "last_name AS FN"])
         .innerJoin(SelectQueryInfo, 'id', 'users_id')
         .where('first_name', '=', 'first_name_test')
+        .whereIsNotNull('email')
         .query()
 
-        expect(SelectQuery.query).to.eql('SELECT Testusers.email, Testusers.first_name, Testusers.last_name AS FN, users_info.* FROM custom.users AS Testusers INNER JOIN custom.users_info AS users_info ON Testusers.id = users_info.users_id WHERE Testusers.first_name = $1 AND users_info.status = $2 ORDER BY users_info.created_at DESC')
+        expect(SelectQuery.query).to.eql('SELECT Testusers.email, Testusers.first_name, Testusers.last_name AS FN, users_info.* FROM custom.users AS Testusers INNER JOIN custom.users_info AS users_info ON Testusers.id = users_info.users_id WHERE Testusers.first_name = $1 AND Testusers.email IS NOT NULL AND users_info.status = $2 AND users_info.first_name IS NULL AND users_info.status IS NOT NULL ORDER BY users_info.created_at DESC')
         expect(SelectQuery.vars).to.eql([
             "first_name_test",
             "t"

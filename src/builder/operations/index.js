@@ -6,6 +6,8 @@ import Order from './order'
 import Where from './where'
 import WhereIn from './whereIn'
 import WhereOr from './whereOr'
+import WhereIsNull from './whereIsNull'
+import WhereIsNotNull from './whereIsNotNull'
 import Limit from './limit'
 import Distinct from './distinct'
 import Count from './count'
@@ -27,6 +29,8 @@ export default {
   where: Where,
   whereIn: WhereIn,
   whereOr: WhereOr,
+  whereIsNull: WhereIsNull,
+  whereIsNotNull: WhereIsNotNull,
   order: Order,
   limit: Limit,
   distinct: Distinct,

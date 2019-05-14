@@ -144,9 +144,10 @@ const Users = await Manager.build({
     .innerJoin(SelectQueryInfo, 'id', 'users_id')
     .leftJoin(SelectQueryAddress, 'id', 'users_id')
     .where('first_name', '=', 'first_name_test')
+    .whereIsNull('last_name')
     .execute()
 
-//SELECT Testusers.email, Testusers.first_name, Testusers.last_name AS FN, users_address.* FROM custom.users AS Testusers INNER JOIN custom.users_info AS users_info ON Testusers.id = users_info.users_id LEFT JOIN custom.users_address AS users_address ON Testusers.id = users_address.users_id WHERE Testusers.first_name = $1 AND users_info.status = $2 AND users_address.number = $3 ORDER BY users_info.created_at DESC 
+//SELECT Testusers.email, Testusers.first_name, Testusers.last_name AS FN, users_address.* FROM custom.users AS Testusers INNER JOIN custom.users_info AS users_info ON Testusers.id = users_info.users_id LEFT JOIN custom.users_address AS users_address ON Testusers.id = users_address.users_id WHERE Testusers.first_name = $1 AND Testusers.last_name IS NULL AND users_info.status = $2 AND users_address.number = $3 ORDER BY users_info.created_at DESC 
 
 
 const Users = await Manager.build({
@@ -171,7 +172,8 @@ INSERT
 ```js
 const data = {
   email: 'test@test.com',
-  first_name: 'Test'
+  first_name: 'Test',
+  last_name: null
 }
 
 const Users = await Manager.build({
@@ -181,7 +183,7 @@ const Users = await Manager.build({
   .returning()
   .execute()
 
-//INSERT INTO custom.user (email, first_name) VALUES ($1, $2) RETURNING *
+//INSERT INTO custom.user (email, first_name, last_name) VALUES ($1, $2, NULL) RETURNING *
 ```
 
 UPDATE
@@ -189,7 +191,8 @@ UPDATE
 ```js
 const data = {
   email: 'test1@test.com',
-  first_name: 'Test1'
+  first_name: 'Test1',
+  last_name: null
 }
 
 const Users = await Manager.build({
@@ -199,7 +202,7 @@ const Users = await Manager.build({
   .where("id", "=", "123")
   .execute()
 
-//UPDATE custom.users AS users SET email = $1, first_name = $2 WHERE users.id = $3
+//UPDATE custom.users AS users SET email = $1, first_name = $2, last_name = NULL WHERE users.id = $3
 ```
 
 
