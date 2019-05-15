@@ -5,7 +5,7 @@ export default function({ type = 'AND', field, operator = '=', values, group = n
     values = [values]
   }
 
-  if (values !== null && typeof values.builder !== 'undefined') {
+  if (values !== null && typeof values !== 'undefined' && typeof values.builder !== 'undefined') {
     boundValues.push(`${values.builder.instance().helpers.alias()}.${values.field}`)
     values = null
   } else {
