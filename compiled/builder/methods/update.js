@@ -18,7 +18,9 @@ exports.default = function () {
     this.sql.push(update);
   }
 
-  var joins = this.helpers.join(true);
+  var joins = this.helpers.join({
+    isUpdateMethod: true
+  });
 
   joins.forEach(function (join) {
     _this.sql.push(join);

@@ -1,13 +1,13 @@
 import Pool from 'pg-pool'
 import url from 'url'
 
-import { DATABASE_URL, DATABASE_SSL } from './env'
+import { DATABASE_URL } from './env'
 
 if (!DATABASE_URL) {
   throw new Error('Environment variable DATABASE_URL is not set')
 }
 
-const params = url.parse(DATABASE_URL)
+const params = url.parse(DATABASE_URL, true)
 
 const auth = params.auth.split(':')
 
@@ -17,8 +17,8 @@ const config = {
   host: params.hostname,
   port: params.port,
   database: params.pathname.split('/')[1],
-  ssl: DATABASE_SSL,
+  ssl: true,
   idleTimeoutMillis: 30000,
 }
 
-export default new Pool(config)
+export default new Pool(Object.assign(config, params.query))

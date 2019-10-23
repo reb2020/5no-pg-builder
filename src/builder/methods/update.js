@@ -10,7 +10,9 @@ export default function() {
     this.sql.push(update)
   }
 
-  const joins = this.helpers.join(true)
+  const joins = this.helpers.join({
+    isUpdateMethod: true,
+  })
 
   joins.forEach((join) => {
     this.sql.push(join)

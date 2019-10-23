@@ -11,8 +11,7 @@ npm install --save 5no-pg-builder
 ## .env
 
 ```js
-DATABASE_URL=postgres://test:123123@127.0.0.1:5432/testDB
-DATABASE_SSL=false
+DATABASE_URL=postgres://test:123123@127.0.0.1:5432/testDB?ssl=false
 DATABASE_QUERY_LOG=true
 ```
 
@@ -242,6 +241,21 @@ const Users = await Manager.build({
   .execute()
   
 //DELETE FROM custom.users AS users WHERE users.id = $1
+```
+
+DELETE WITH JOIN
+
+```js
+
+const Users = await Manager.build({
+    table: "users",
+    schema: "custom"
+  }).delete()
+  .join(SelectQueryInfo, 'id', 'users_id')
+  .where("id", "=", "123")
+  .execute()
+  
+//DELETE FROM custom.users AS users USING custom.users_info AS users_info WHERE users.id = $1 AND TestUser.id = users_info.users_id
 ```
 
 TRANSACTION

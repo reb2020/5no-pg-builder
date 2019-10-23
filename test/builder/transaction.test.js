@@ -6,10 +6,10 @@ const expect = chai.expect
 
 describe('Builder', () => {
   beforeEach(() => {
-    Manager.query = (q, v) => {
-        return new Promise((resolve) => {
-            resolve(q)
-        })
+    Manager.query = (q) => {
+      return new Promise((resolve) => {
+        resolve(q)
+      })
     }
   })
 
@@ -17,56 +17,52 @@ describe('Builder', () => {
   })
 
   describe('Transaction', () => {
-    it('begin and commit', async () => {
+    it('begin and commit', async() => {
+      const begin = await Manager.begin()
 
-        const begin = await Manager.begin()
+      const data = {
+        id: '123',
+        email: 'test@test.a.a',
+        first_name: 'Test',
+      }
 
-        const data = {
-            id: '123',
-            email: 'test@test.a.a',
-            first_name: 'Test'
-        }
-
-        const SelectQuery = await Manager.build({
-            table: "user",
-            alias: "TestUser",
-            schema: "custom"
-        }).insert(data)
+      const SelectQuery = await Manager.build({
+        table: 'user',
+        alias: 'TestUser',
+        schema: 'custom',
+      }).insert(data)
         .returning()
         .execute()
 
-        const commit = await Manager.commit()
+      const commit = await Manager.commit()
 
-        expect(begin).to.eql('BEGIN')
-        expect(SelectQuery).to.eql('INSERT INTO custom.user (id, email, first_name) VALUES ($1, $2, $3) RETURNING *')
-        expect(commit).to.eql('COMMIT')
-        
+      expect(begin).to.eql('BEGIN')
+      expect(SelectQuery).to.eql('INSERT INTO custom.user (id, email, first_name) VALUES ($1, $2, $3) RETURNING *')
+      expect(commit).to.eql('COMMIT')
     })
 
-    it('begin and rollback', async () => {
+    it('begin and rollback', async() => {
+      const begin = await Manager.begin()
 
-        const begin = await Manager.begin()
+      const data = {
+        id: '123',
+        email: 'test@test.a.a',
+        first_name: 'Test',
+      }
 
-        const data = {
-            id: '123',
-            email: 'test@test.a.a',
-            first_name: 'Test'
-        }
-
-        const SelectQuery = await Manager.build({
-            table: "user",
-            alias: "TestUser",
-            schema: "custom"
-        }).insert(data)
+      const SelectQuery = await Manager.build({
+        table: 'user',
+        alias: 'TestUser',
+        schema: 'custom',
+      }).insert(data)
         .returning()
         .execute()
 
-        const rollback = await Manager.rollback()
+      const rollback = await Manager.rollback()
 
-        expect(begin).to.eql('BEGIN')
-        expect(SelectQuery).to.eql('INSERT INTO custom.user (id, email, first_name) VALUES ($1, $2, $3) RETURNING *')
-        expect(rollback).to.eql('ROLLBACK')
-        
+      expect(begin).to.eql('BEGIN')
+      expect(SelectQuery).to.eql('INSERT INTO custom.user (id, email, first_name) VALUES ($1, $2, $3) RETURNING *')
+      expect(rollback).to.eql('ROLLBACK')
     })
   })
 })

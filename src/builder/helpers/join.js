@@ -1,8 +1,19 @@
-export default function(isUpdateMethod = false) {
+export default function(props = null) {
   let joinString = []
   let index = 0
+  let isUpdateMethod = false
+  let isDeleteMethod = false
+
+  if (props && typeof props.isUpdateMethod !== 'undefined') {
+    isUpdateMethod = props.isUpdateMethod
+  }
+
+  if (props && typeof props.isDeleteMethod !== 'undefined') {
+    isDeleteMethod = props.isDeleteMethod
+  }
 
   if (this.state.join) {
+    const maxIndex = Object.keys(this.state.join).length
     Object.keys(this.state.join).forEach((key) => {
       const joinData = this.state.join[key]
 
@@ -12,6 +23,25 @@ export default function(isUpdateMethod = false) {
         }
 
         joinString.push(`FROM ${joinData.secondaryTable}`)
+
+        this.state.where.push(this.helpers.whereData({
+          field: joinData.primaryTableFieldName,
+          operator: '=',
+          values: {
+            builder: joinData.builder,
+            field: joinData.secondaryTableFieldName,
+          },
+        }))
+      } else if (isDeleteMethod === true) {
+        if (!this.state.where) {
+          this.state.where = []
+        }
+
+        if (index === 0) {
+          joinString.push(`USING`)
+        }
+
+        joinString.push(`${joinData.secondaryTable}${(maxIndex === (index + 1)) ? '' : ','}`)
 
         this.state.where.push(this.helpers.whereData({
           field: joinData.primaryTableFieldName,

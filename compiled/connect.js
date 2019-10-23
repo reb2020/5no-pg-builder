@@ -20,7 +20,7 @@ if (!_env.DATABASE_URL) {
   throw new Error('Environment variable DATABASE_URL is not set');
 }
 
-var params = _url2.default.parse(_env.DATABASE_URL);
+var params = _url2.default.parse(_env.DATABASE_URL, true);
 
 var auth = params.auth.split(':');
 
@@ -30,8 +30,8 @@ var config = {
   host: params.hostname,
   port: params.port,
   database: params.pathname.split('/')[1],
-  ssl: _env.DATABASE_SSL,
+  ssl: true,
   idleTimeoutMillis: 30000
 };
 
-exports.default = new _pgPool2.default(config);
+exports.default = new _pgPool2.default(Object.assign(config, params.query));

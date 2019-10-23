@@ -14,6 +14,7 @@ import Count from './count'
 import LeftJoin from './leftJoin'
 import RightJoin from './rightJoin'
 import InnerJoin from './innerJoin'
+import Join from './join'
 import Group from './group'
 import Insert from './insert'
 import Update from './update'
@@ -38,6 +39,7 @@ export default {
   leftJoin: LeftJoin,
   rightJoin: RightJoin,
   innerJoin: InnerJoin,
+  join: Join,
   group: Group,
   insert: Insert,
   update: Update,

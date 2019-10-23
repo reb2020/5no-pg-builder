@@ -68,6 +68,10 @@ var _innerJoin = require('./innerJoin');
 
 var _innerJoin2 = _interopRequireDefault(_innerJoin);
 
+var _join = require('./join');
+
+var _join2 = _interopRequireDefault(_join);
+
 var _group = require('./group');
 
 var _group2 = _interopRequireDefault(_group);
@@ -111,6 +115,7 @@ exports.default = {
   leftJoin: _leftJoin2.default,
   rightJoin: _rightJoin2.default,
   innerJoin: _innerJoin2.default,
+  join: _join2.default,
   group: _group2.default,
   insert: _insert2.default,
   update: _update2.default,

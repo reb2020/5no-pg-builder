@@ -7,12 +7,23 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = function () {
   var _this = this;
 
-  var isUpdateMethod = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
+  var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
 
   var joinString = [];
   var index = 0;
+  var isUpdateMethod = false;
+  var isDeleteMethod = false;
+
+  if (props && typeof props.isUpdateMethod !== 'undefined') {
+    isUpdateMethod = props.isUpdateMethod;
+  }
+
+  if (props && typeof props.isDeleteMethod !== 'undefined') {
+    isDeleteMethod = props.isDeleteMethod;
+  }
 
   if (this.state.join) {
+    var maxIndex = Object.keys(this.state.join).length;
     Object.keys(this.state.join).forEach(function (key) {
       var joinData = _this.state.join[key];
 
@@ -22,6 +33,25 @@ exports.default = function () {
         }
 
         joinString.push('FROM ' + joinData.secondaryTable);
+
+        _this.state.where.push(_this.helpers.whereData({
+          field: joinData.primaryTableFieldName,
+          operator: '=',
+          values: {
+            builder: joinData.builder,
+            field: joinData.secondaryTableFieldName
+          }
+        }));
+      } else if (isDeleteMethod === true) {
+        if (!_this.state.where) {
+          _this.state.where = [];
+        }
+
+        if (index === 0) {
+          joinString.push('USING');
+        }
+
+        joinString.push('' + joinData.secondaryTable + (maxIndex === index + 1 ? '' : ','));
 
         _this.state.where.push(_this.helpers.whereData({
           field: joinData.primaryTableFieldName,
