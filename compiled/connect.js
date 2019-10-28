@@ -34,4 +34,15 @@ var config = {
   idleTimeoutMillis: 30000
 };
 
-exports.default = new _pgPool2.default(Object.assign(config, params.query));
+Object.keys(params.query).forEach(function (key) {
+  var value = params.query[key];
+  if (value.toLowerCase() === 'true' || value.toLowerCase() === 'false') {
+    config[key] = value === 'true';
+  } else if (!isNaN(value)) {
+    config[key] = Number(value);
+  } else {
+    config[key] = value;
+  }
+});
+
+exports.default = new _pgPool2.default(config);

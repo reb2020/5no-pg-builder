@@ -21,4 +21,15 @@ const config = {
   idleTimeoutMillis: 30000,
 }
 
-export default new Pool(Object.assign(config, params.query))
+Object.keys(params.query).forEach((key) => {
+  const value = params.query[key]
+  if (value.toLowerCase() === 'true' || value.toLowerCase() === 'false') {
+    config[key] = value === 'true'
+  } else if (!isNaN(value)) {
+    config[key] = Number(value)
+  } else {
+    config[key] = value
+  }
+})
+
+export default new Pool(config)
