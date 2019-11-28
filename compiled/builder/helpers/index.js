@@ -84,6 +84,10 @@ var _having = require('./having');
 
 var _having2 = _interopRequireDefault(_having);
 
+var _onConflict = require('./onConflict');
+
+var _onConflict2 = _interopRequireDefault(_onConflict);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -106,5 +110,6 @@ exports.default = {
   update: _update2.default,
   returning: _returning2.default,
   havingData: _havingData2.default,
-  having: _having2.default
+  having: _having2.default,
+  onConflict: _onConflict2.default
 };

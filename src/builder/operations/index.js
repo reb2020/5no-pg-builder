@@ -21,6 +21,9 @@ import Update from './update'
 import Returning from './returning'
 import Delete from './delete'
 import Having from './having'
+import OnConflict from './onConflict'
+import DoNothing from './doNothing'
+import DoUpdate from './doUpdate'
 
 export default {
   schema: Schema,
@@ -46,4 +49,7 @@ export default {
   returning: Returning,
   delete: Delete,
   having: Having,
+  onConflict: OnConflict,
+  doNothing: DoNothing,
+  doUpdate: DoUpdate,
 }

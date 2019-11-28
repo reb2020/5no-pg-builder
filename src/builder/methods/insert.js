@@ -8,6 +8,11 @@ export default function() {
   this.sql.push('VALUES')
   this.sql.push(`(${data.values})`)
 
+  const onConflict = this.helpers.onConflict()
+  if (onConflict) {
+    this.sql.push(onConflict)
+  }
+
   const returning = this.helpers.returning()
   if (returning) {
     this.sql.push('RETURNING')

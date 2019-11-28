@@ -96,6 +96,18 @@ var _having = require('./having');
 
 var _having2 = _interopRequireDefault(_having);
 
+var _onConflict = require('./onConflict');
+
+var _onConflict2 = _interopRequireDefault(_onConflict);
+
+var _doNothing = require('./doNothing');
+
+var _doNothing2 = _interopRequireDefault(_doNothing);
+
+var _doUpdate = require('./doUpdate');
+
+var _doUpdate2 = _interopRequireDefault(_doUpdate);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -121,5 +133,8 @@ exports.default = {
   update: _update2.default,
   returning: _returning2.default,
   delete: _delete2.default,
-  having: _having2.default
+  having: _having2.default,
+  onConflict: _onConflict2.default,
+  doNothing: _doNothing2.default,
+  doUpdate: _doUpdate2.default
 };

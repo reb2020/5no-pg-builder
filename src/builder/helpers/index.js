@@ -18,6 +18,7 @@ import Update from './update'
 import Returning from './returning'
 import HavingData from './havingData'
 import Having from './having'
+import OnConflict from './onConflict'
 
 export default {
   bound: Bound,
@@ -40,4 +41,5 @@ export default {
   returning: Returning,
   havingData: HavingData,
   having: Having,
+  onConflict: OnConflict,
 }

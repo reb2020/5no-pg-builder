@@ -183,6 +183,30 @@ const Users = await Manager.build({
   .execute()
 
 //INSERT INTO custom.user (email, first_name, last_name) VALUES ($1, $2, NULL) RETURNING *
+
+
+const Users = await Manager.build({
+    table: "users",
+    schema: "custom"
+  }).insert(data)
+  .onConflict(['email'])
+  .doNothing()
+  .returning()
+  .execute()
+
+//INSERT INTO custom.user (email, first_name, last_name) VALUES ($1, $2, NULL) ON CONFLICT (email) DO NOTHING RETURNING *
+
+
+const Users = await Manager.build({
+    table: "users",
+    schema: "custom"
+  }).insert(data)
+  .onConflict(['email'])
+  .doUpdate(['email', 'first_name', 'last_name'])
+  .returning()
+  .execute()
+
+//INSERT INTO custom.user (email, first_name, last_name) VALUES ($1, $2, NULL) ON CONFLICT (email) DO UPDATE SET email = $2 first_name = $3 last_name = NULL WHERE email = $2 RETURNING *
 ```
 
 UPDATE

@@ -14,6 +14,11 @@ exports.default = function () {
   this.sql.push('VALUES');
   this.sql.push('(' + data.values + ')');
 
+  var onConflict = this.helpers.onConflict();
+  if (onConflict) {
+    this.sql.push(onConflict);
+  }
+
   var returning = this.helpers.returning();
   if (returning) {
     this.sql.push('RETURNING');
