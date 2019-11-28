@@ -11,6 +11,7 @@ exports.default = function () {
         updateFields = _state$conflict.updateFields,
         fields = _state$conflict.fields;
     var insert = this.state.insert;
+    var aliasField = this.helpers.field;
 
 
     var returnData = ['ON CONFLICT (' + fields.join(', ') + ') DO ' + method];
@@ -20,16 +21,18 @@ exports.default = function () {
 
       var index = 0;
       var where = [];
+      var setData = [];
       insert.fields.forEach(function (field) {
         if (updateFields.includes(field)) {
-          returnData.push(field + ' = ' + insert.values[index]);
+          setData.push(field + ' = ' + insert.values[index]);
         }
         if (fields.includes(field)) {
-          where.push(field + ' = ' + insert.values[index]);
+          where.push(aliasField(field) + ' = ' + insert.values[index]);
         }
         index++;
       });
 
+      returnData.push(setData.join(', '));
       returnData.push('WHERE');
       returnData.push(where.join(' AND '));
     }

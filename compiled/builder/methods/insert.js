@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 
 exports.default = function () {
   this.sql.push('INSERT INTO');
-  this.sql.push(this.helpers.table());
+  this.sql.push(this.helpers.table(true));
 
   var data = this.helpers.insert();
 
@@ -19,7 +19,7 @@ exports.default = function () {
     this.sql.push(onConflict);
   }
 
-  var returning = this.helpers.returning();
+  var returning = this.helpers.returning(true);
   if (returning) {
     this.sql.push('RETURNING');
     this.sql.push(returning);

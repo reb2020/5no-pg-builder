@@ -28,7 +28,6 @@ describe('Builder', () => {
 
       const SelectQuery = await Manager.build({
         table: 'user',
-        alias: 'TestUser',
         schema: 'custom',
       }).insert(data)
         .returning()
@@ -37,7 +36,7 @@ describe('Builder', () => {
       const commit = await Manager.commit()
 
       expect(begin).to.eql('BEGIN')
-      expect(SelectQuery).to.eql('INSERT INTO custom.user (id, email, first_name) VALUES ($1, $2, $3) RETURNING *')
+      expect(SelectQuery).to.eql('INSERT INTO custom.user AS user (id, email, first_name) VALUES ($1, $2, $3) RETURNING user.*')
       expect(commit).to.eql('COMMIT')
     })
 
@@ -52,7 +51,6 @@ describe('Builder', () => {
 
       const SelectQuery = await Manager.build({
         table: 'user',
-        alias: 'TestUser',
         schema: 'custom',
       }).insert(data)
         .returning()
@@ -61,7 +59,7 @@ describe('Builder', () => {
       const rollback = await Manager.rollback()
 
       expect(begin).to.eql('BEGIN')
-      expect(SelectQuery).to.eql('INSERT INTO custom.user (id, email, first_name) VALUES ($1, $2, $3) RETURNING *')
+      expect(SelectQuery).to.eql('INSERT INTO custom.user AS user (id, email, first_name) VALUES ($1, $2, $3) RETURNING user.*')
       expect(rollback).to.eql('ROLLBACK')
     })
   })

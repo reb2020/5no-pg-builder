@@ -182,7 +182,7 @@ const Users = await Manager.build({
   .returning()
   .execute()
 
-//INSERT INTO custom.user (email, first_name, last_name) VALUES ($1, $2, NULL) RETURNING *
+//INSERT INTO custom.user AS user (email, first_name, last_name) VALUES ($1, $2, NULL) RETURNING user.*
 
 
 const Users = await Manager.build({
@@ -194,7 +194,7 @@ const Users = await Manager.build({
   .returning()
   .execute()
 
-//INSERT INTO custom.user (email, first_name, last_name) VALUES ($1, $2, NULL) ON CONFLICT (email) DO NOTHING RETURNING *
+//INSERT INTO custom.user AS user (email, first_name, last_name) VALUES ($1, $2, NULL) ON CONFLICT (email) DO NOTHING RETURNING user.*
 
 
 const Users = await Manager.build({
@@ -206,7 +206,7 @@ const Users = await Manager.build({
   .returning()
   .execute()
 
-//INSERT INTO custom.user (email, first_name, last_name) VALUES ($1, $2, NULL) ON CONFLICT (email) DO UPDATE SET email = $2 first_name = $3 last_name = NULL WHERE email = $2 RETURNING *
+//INSERT INTO custom.user AS user (email, first_name, last_name) VALUES ($1, $2, NULL) ON CONFLICT (email) DO UPDATE SET email = $2, first_name = $3, last_name = NULL WHERE user.email = $2 RETURNING user.*
 ```
 
 UPDATE

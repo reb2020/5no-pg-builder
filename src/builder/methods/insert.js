@@ -1,6 +1,6 @@
 export default function() {
   this.sql.push('INSERT INTO')
-  this.sql.push(this.helpers.table())
+  this.sql.push(this.helpers.table(true))
 
   const data = this.helpers.insert()
 
@@ -13,7 +13,7 @@ export default function() {
     this.sql.push(onConflict)
   }
 
-  const returning = this.helpers.returning()
+  const returning = this.helpers.returning(true)
   if (returning) {
     this.sql.push('RETURNING')
     this.sql.push(returning)

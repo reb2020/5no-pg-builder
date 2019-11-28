@@ -25,13 +25,12 @@ describe('Builder', () => {
 
       const SelectQuery = Manager.build({
         table: 'user',
-        alias: 'TestUser',
         schema: 'custom',
       }).insert(data)
         .returning()
         .query()
 
-      expect(SelectQuery.query).to.eql('INSERT INTO custom.user (id, email, first_name, last_name, personalised) VALUES ($1, $2, $3, NULL, $4) RETURNING *')
+      expect(SelectQuery.query).to.eql('INSERT INTO custom.user AS user (id, email, first_name, last_name, personalised) VALUES ($1, $2, $3, NULL, $4) RETURNING user.*')
       expect(SelectQuery.vars).to.eql([
         '123',
         'test@test.a.a',
@@ -61,7 +60,7 @@ describe('Builder', () => {
         .returning()
         .query()
 
-      expect(SelectQuery.query).to.eql('INSERT INTO custom.user (id, email, first_name, last_name, personalised) VALUES ($1, $2, $3, NULL, $4) ON CONFLICT (email) DO NOTHING RETURNING *')
+      expect(SelectQuery.query).to.eql('INSERT INTO custom.user AS TestUser (id, email, first_name, last_name, personalised) VALUES ($1, $2, $3, NULL, $4) ON CONFLICT (email) DO NOTHING RETURNING TestUser.*')
       expect(SelectQuery.vars).to.eql([
         '123',
         'test@test.a.a',
@@ -88,10 +87,10 @@ describe('Builder', () => {
       }).insert(data)
         .onConflict(['id', 'email'])
         .doUpdate(['email', 'first_name', 'last_name'])
-        .returning()
+        .returning(['email'])
         .query()
 
-      expect(SelectQuery.query).to.eql('INSERT INTO custom.user (id, email, first_name, last_name, personalised) VALUES ($1, $2, $3, NULL, $4) ON CONFLICT (id, email) DO UPDATE SET email = $2 first_name = $3 last_name = NULL WHERE id = $1 AND email = $2 RETURNING *')
+      expect(SelectQuery.query).to.eql('INSERT INTO custom.user AS TestUser (id, email, first_name, last_name, personalised) VALUES ($1, $2, $3, NULL, $4) ON CONFLICT (id, email) DO UPDATE SET email = $2, first_name = $3, last_name = NULL WHERE TestUser.id = $1 AND TestUser.email = $2 RETURNING TestUser.email')
       expect(SelectQuery.vars).to.eql([
         '123',
         'test@test.a.a',
