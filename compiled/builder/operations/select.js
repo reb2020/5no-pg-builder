@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function () {
-  var fields = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+  var fields = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : ['*'];
 
   this.state.method = 'select';
   this.state.fields = this.helpers.setFields(fields);

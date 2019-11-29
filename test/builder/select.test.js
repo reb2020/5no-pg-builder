@@ -15,7 +15,7 @@ describe('Builder', () => {
     it('without where, order, limit', async() => {
       const SelectQuery = Manager.build({
         table: 'users',
-      }).select(['*'])
+      }).select()
         .query()
 
       expect(SelectQuery.query).to.eql('SELECT users.* FROM public.users AS users')
