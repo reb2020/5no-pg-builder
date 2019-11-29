@@ -75,6 +75,14 @@ class Builder {
     })
   }
 
+  rows = () => {
+    return new Promise((resolve, reject) => {
+      this.execute().then((result) => {
+        resolve(result.rows || [])
+      }).catch(reject)
+    })
+  }
+
   instance = () => {
     return this
   }

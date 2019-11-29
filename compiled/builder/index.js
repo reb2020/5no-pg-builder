@@ -97,6 +97,14 @@ var _initialiseProps = function _initialiseProps() {
     });
   };
 
+  this.rows = function () {
+    return new Promise(function (resolve, reject) {
+      _this2.execute().then(function (result) {
+        resolve(result.rows || []);
+      }).catch(reject);
+    });
+  };
+
   this.instance = function () {
     return _this2;
   };
