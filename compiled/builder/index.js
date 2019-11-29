@@ -46,6 +46,7 @@ var Builder = function Builder(pool) {
 
   this.operations = {
     execute: this.execute,
+    rows: this.rows,
     query: this.query,
     instance: this.instance
   };

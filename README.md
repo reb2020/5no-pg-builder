@@ -15,6 +15,15 @@ DATABASE_URL=postgres://test:123123@127.0.0.1:5432/testDB?ssl=false
 DATABASE_QUERY_LOG=true
 ```
 
+## Methods
+
+```js
+async execute() // Return PG result
+async rows() // Return rows of PG result
+async query() // Return raw query text
+```
+
+
 ## Examples
 
 SELECT
