@@ -1,5 +1,9 @@
 'use strict';
 
+var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 var _methods = require('./methods');
 
 var _methods2 = _interopRequireDefault(_methods);
@@ -25,6 +29,9 @@ var Builder = function Builder(pool) {
 
   this.pool = pool;
 
+  this.rowsHandler = function (rows) {
+    return rows;
+  };
   this.sql = [];
   this.boundVars = [];
 
@@ -79,6 +86,12 @@ var _initialiseProps = function _initialiseProps() {
     }
   };
 
+  this._rowsHandler = function (rows) {
+    return new Promise(function (resolve, reject) {
+      Promise.resolve(_this2.rowsHandler(rows, _this2.state.method)).then(resolve).catch(reject);
+    });
+  };
+
   this.query = function () {
     _this2._initMethod();
     return {
@@ -92,8 +105,14 @@ var _initialiseProps = function _initialiseProps() {
     var pool = _this2.pool;
 
     return new Promise(function (resolve, reject) {
-      pool(queryData.query, queryData.vars).then(function (results) {
-        resolve(results);
+      pool(queryData.query, queryData.vars).then(function (result) {
+        if ((typeof result === 'undefined' ? 'undefined' : _typeof(result)) === 'object') {
+          _this2._rowsHandler(result.rows || []).then(function (rows) {
+            resolve(_extends({}, result, { rows: rows }));
+          }).catch(reject);
+        } else {
+          resolve(result);
+        }
       }).catch(reject);
     });
   };

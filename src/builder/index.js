@@ -6,6 +6,7 @@ class Builder {
   constructor(pool) {
     this.pool = pool
 
+    this.rowsHandler = rows => rows
     this.sql = []
     this.boundVars = []
 
@@ -57,6 +58,12 @@ class Builder {
     }
   }
 
+  _rowsHandler = (rows) => {
+    return new Promise((resolve, reject) => {
+      Promise.resolve(this.rowsHandler(rows, this.state.method)).then(resolve).catch(reject)
+    })
+  }
+
   query = () => {
     this._initMethod()
     return {
@@ -70,8 +77,14 @@ class Builder {
     const pool = this.pool
 
     return new Promise((resolve, reject) => {
-      pool(queryData.query, queryData.vars).then((results) => {
-        resolve(results)
+      pool(queryData.query, queryData.vars).then((result) => {
+        if (typeof result === 'object') {
+          this._rowsHandler(result.rows || []).then((rows) => {
+            resolve({ ...result, rows: rows })
+          }).catch(reject)
+        } else {
+          resolve(result)
+        }
       }).catch(reject)
     })
   }

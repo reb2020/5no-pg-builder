@@ -108,6 +108,14 @@ var _doUpdate = require('./doUpdate');
 
 var _doUpdate2 = _interopRequireDefault(_doUpdate);
 
+var _whereBetween = require('./whereBetween');
+
+var _whereBetween2 = _interopRequireDefault(_whereBetween);
+
+var _whereNotBetween = require('./whereNotBetween');
+
+var _whereNotBetween2 = _interopRequireDefault(_whereNotBetween);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = {
@@ -136,5 +144,7 @@ exports.default = {
   having: _having2.default,
   onConflict: _onConflict2.default,
   doNothing: _doNothing2.default,
-  doUpdate: _doUpdate2.default
+  doUpdate: _doUpdate2.default,
+  whereBetween: _whereBetween2.default,
+  whereNotBetween: _whereNotBetween2.default
 };

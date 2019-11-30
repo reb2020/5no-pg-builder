@@ -14,8 +14,14 @@ exports.default = function () {
       var whereConditional = null;
 
       switch (whereData.operator) {
-        case 'in':
-          whereConditional = whereData.table + '.' + whereData.field + ' IN (' + whereData.boundValues.join(',') + ')';
+        case 'IN':
+          whereConditional = whereData.table + '.' + whereData.field + ' ' + whereData.operator + ' (' + whereData.boundValues.join(',') + ')';
+          break;
+        case 'BETWEEN':
+          whereConditional = whereData.table + '.' + whereData.field + ' ' + whereData.operator + ' ' + whereData.boundValues.join(' AND ');
+          break;
+        case 'NOT BETWEEN':
+          whereConditional = whereData.table + '.' + whereData.field + ' ' + whereData.operator + ' ' + whereData.boundValues.join(' AND ');
           break;
         default:
           whereConditional = whereData.table + '.' + whereData.field + ' ' + whereData.operator + ' ' + whereData.boundValues.pop();

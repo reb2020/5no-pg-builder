@@ -24,6 +24,8 @@ import Having from './having'
 import OnConflict from './onConflict'
 import DoNothing from './doNothing'
 import DoUpdate from './doUpdate'
+import WhereBetween from './whereBetween'
+import WhereNotBetween from './whereNotBetween'
 
 export default {
   schema: Schema,
@@ -52,4 +54,6 @@ export default {
   onConflict: OnConflict,
   doNothing: DoNothing,
   doUpdate: DoUpdate,
+  whereBetween: WhereBetween,
+  whereNotBetween: WhereNotBetween,
 }

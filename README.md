@@ -15,6 +15,17 @@ DATABASE_URL=postgres://test:123123@127.0.0.1:5432/testDB?ssl=false
 DATABASE_QUERY_LOG=true
 ```
 
+## Manager.build
+
+```js
+{
+    table: "users",
+    alias: "Testusers",
+    schema: "custom",
+    rowsHandler: fn(rows, method: 'select' | 'count' | 'update' | 'delete'),
+}
+```
+
 ## Methods
 
 ```js
@@ -114,6 +125,34 @@ const Users = await Manager.build({
     .execute()
 
 // "SELECT Testusers.email FROM custom.users AS Testusers WHERE Testusers.first_name = $1 GROUP BY Testusers.email HAVING count(Testusers.email) > $2 ORDER BY Testusers.email ASC"   
+
+const Users = await Manager.build({
+    table: "users",
+    alias: "Testusers",
+    schema: "custom"
+  }).select(["email"])
+    .where('first_name', '=', 'first_name_test')
+    .whereBetween('created_at', '2019-10-12', '2019-11-12')
+    .group(['email'])
+    .order('email', 'ASC')
+    .having('count(email)', '>', '1')
+    .execute()
+
+// "SELECT Testusers.email FROM custom.users AS Testusers WHERE Testusers.first_name = $1 AND Testusers.created_at BETWEEN $2 AND $3 GROUP BY Testusers.email HAVING count(Testusers.email) > $4 ORDER BY Testusers.email ASC"   
+
+const Users = await Manager.build({
+    table: "users",
+    alias: "Testusers",
+    schema: "custom"
+  }).select(["email"])
+    .where('first_name', '=', 'first_name_test')
+    .whereNotBetween('created_at', '2019-10-12', '2019-11-12')
+    .group(['email'])
+    .order('email', 'ASC')
+    .having('count(email)', '>', '1')
+    .execute()
+
+// "SELECT Testusers.email FROM custom.users AS Testusers WHERE Testusers.first_name = $1 AND Testusers.created_at NOT BETWEEN $2 AND $3 GROUP BY Testusers.email HAVING count(Testusers.email) > $4 ORDER BY Testusers.email ASC"   
 
 const Users = await Manager.build({
     table: "users",

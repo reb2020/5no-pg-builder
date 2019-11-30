@@ -555,5 +555,49 @@ describe('Builder', () => {
         '1',
       ])
     })
+
+    it('where between', async() => {
+      const SelectQuery = Manager.build({
+        table: 'users',
+        alias: 'Testusers',
+        schema: 'custom',
+      }).select(['email'])
+        .where('first_name', '=', 'first_name_test')
+        .whereBetween('created_at', '2019-10-12', '2019-11-12')
+        .group(['email'])
+        .order('email', 'ASC')
+        .having('count(email)', '>', '1')
+        .query()
+
+      expect(SelectQuery.query).to.eql('SELECT Testusers.email FROM custom.users AS Testusers WHERE Testusers.first_name = $1 AND Testusers.created_at BETWEEN $2 AND $3 GROUP BY Testusers.email HAVING count(Testusers.email) > $4 ORDER BY Testusers.email ASC')
+      expect(SelectQuery.vars).to.eql([
+        'first_name_test',
+        '2019-10-12',
+        '2019-11-12',
+        '1',
+      ])
+    })
+
+    it('where not between', async() => {
+      const SelectQuery = Manager.build({
+        table: 'users',
+        alias: 'Testusers',
+        schema: 'custom',
+      }).select(['email'])
+        .where('first_name', '=', 'first_name_test')
+        .whereNotBetween('created_at', '2019-10-12', '2019-11-12')
+        .group(['email'])
+        .order('email', 'ASC')
+        .having('count(email)', '>', '1')
+        .query()
+
+      expect(SelectQuery.query).to.eql('SELECT Testusers.email FROM custom.users AS Testusers WHERE Testusers.first_name = $1 AND Testusers.created_at NOT BETWEEN $2 AND $3 GROUP BY Testusers.email HAVING count(Testusers.email) > $4 ORDER BY Testusers.email ASC')
+      expect(SelectQuery.vars).to.eql([
+        'first_name_test',
+        '2019-10-12',
+        '2019-11-12',
+        '1',
+      ])
+    })
   })
 })

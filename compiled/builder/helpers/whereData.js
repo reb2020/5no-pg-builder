@@ -38,7 +38,7 @@ exports.default = function (_ref) {
     type: type,
     field: field,
     table: this.helpers.alias(),
-    operator: ['is', 'is not'].includes(operator.toLowerCase()) ? operator.toUpperCase() : operator.toLowerCase(),
+    operator: ['is', 'is not', 'in', 'between', 'not between'].includes(operator.toLowerCase()) ? operator.toUpperCase() : operator.toLowerCase(),
     values: values,
     boundValues: boundValues
   };

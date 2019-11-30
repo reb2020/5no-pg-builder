@@ -29,13 +29,18 @@ var Manager = function Manager() {
     var table = _ref.table,
         _ref$schema = _ref.schema,
         schema = _ref$schema === undefined ? 'public' : _ref$schema,
-        alias = _ref.alias;
+        alias = _ref.alias,
+        rowsHandler = _ref.rowsHandler;
 
     var builder = new _builder2.default(_this.query);
 
     builder.operations.table(table);
     builder.operations.schema(schema);
     builder.operations.alias(alias);
+
+    if (rowsHandler) {
+      builder.rowsHandler = rowsHandler;
+    }
 
     return builder.operations;
   };
