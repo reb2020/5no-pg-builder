@@ -54,6 +54,7 @@ var Builder = function Builder(pool) {
   this.operations = {
     execute: this.execute,
     rows: this.rows,
+    result: this.result,
     query: this.query,
     instance: this.instance
   };
@@ -106,7 +107,7 @@ var _initialiseProps = function _initialiseProps() {
 
     return new Promise(function (resolve, reject) {
       pool(queryData.query, queryData.vars).then(function (result) {
-        if ((typeof result === 'undefined' ? 'undefined' : _typeof(result)) === 'object') {
+        if ((typeof result === 'undefined' ? 'undefined' : _typeof(result)) === 'object' && _this2.state.method !== 'count') {
           _this2._rowsHandler(result.rows || []).then(function (rows) {
             resolve(_extends({}, result, { rows: rows }));
           }).catch(reject);
@@ -121,6 +122,20 @@ var _initialiseProps = function _initialiseProps() {
     return new Promise(function (resolve, reject) {
       _this2.execute().then(function (result) {
         resolve(result.rows || []);
+      }).catch(reject);
+    });
+  };
+
+  this.result = function () {
+    if (_this2.state.method !== 'count') {
+      throw new Error('This method is used only for count');
+    }
+    return new Promise(function (resolve, reject) {
+      _this2.execute().then(function (result) {
+        resolve(result.rows.reduce(function (acc, _ref) {
+          var count_rows = _ref.count_rows;
+          return acc + Number(count_rows);
+        }, 0));
       }).catch(reject);
     });
   };

@@ -31,6 +31,7 @@ DATABASE_QUERY_LOG=true
 ```js
 async execute() // Return PG result
 async rows() // Return rows of PG result
+async result() // Return summary of count_rows, use only with count
 async query() // Return raw query text
 ```
 

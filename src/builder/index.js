@@ -29,6 +29,7 @@ class Builder {
     this.operations = {
       execute: this.execute,
       rows: this.rows,
+      result: this.result,
       query: this.query,
       instance: this.instance,
     }
@@ -78,7 +79,7 @@ class Builder {
 
     return new Promise((resolve, reject) => {
       pool(queryData.query, queryData.vars).then((result) => {
-        if (typeof result === 'object') {
+        if (typeof result === 'object' && this.state.method !== 'count') {
           this._rowsHandler(result.rows || []).then((rows) => {
             resolve({ ...result, rows: rows })
           }).catch(reject)
@@ -93,6 +94,17 @@ class Builder {
     return new Promise((resolve, reject) => {
       this.execute().then((result) => {
         resolve(result.rows || [])
+      }).catch(reject)
+    })
+  }
+
+  result = () => {
+    if (this.state.method !== 'count') {
+      throw new Error('This method is used only for count')
+    }
+    return new Promise((resolve, reject) => {
+      this.execute().then((result) => {
+        resolve(result.rows.reduce((acc, { count_rows }) => acc + Number(count_rows), 0))
       }).catch(reject)
     })
   }
