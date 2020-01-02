@@ -1,11 +1,13 @@
+# <a href='https://5no.io'><img src='https://5no.io/img/5no-small-logo.png' height='100' alt='5no Logo' aria-label='5no.io' /></a>PG Builder
+
 Simple query builder for PostgreSQL
 
 ## Install
 
-5no-pg-builder requires Node version 8 or above.
+@5no/pg-builder requires Node version 8 or above.
 
 ```sh
-npm install --save 5no-pg-builder
+npm install --save @5no/pg-builder
 ```
 
 ## .env
@@ -41,7 +43,7 @@ async query() // Return raw query text
 SELECT
 
 ```js
-const Manager = require('5no-pg-builder')
+const Manager = require('@5no/pg-builder')
 
 const Users = await Manager.build({
     table: "users"
@@ -358,7 +360,7 @@ await Manager.commit() // or await Manager.rollback()
 RAW QUERY
 
 ```js
-const Manager = require('5no-pg-builder')
+const Manager = require('@5no/pg-builder')
 
 const SelectQueryInfo = await Manager.query("SELECT Testusers.email, Testusers.first_name, Testusers.last_name AS FN, users_address.* FROM custom.users AS Testusers INNER JOIN custom.users_info AS users_info ON Testusers.id = users_info.users_id LEFT JOIN custom.users_address AS users_address ON Testusers.id = users_address.users_id WHERE Testusers.first_name = $1 AND users_info.status = $2 AND users_address.number = $3 ORDER BY users_info.created_at DESC", [
   "one",

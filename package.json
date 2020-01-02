@@ -1,6 +1,6 @@
 {
-  "name": "5no-pg-builder",
-  "version": "1.1.9",
+  "name": "@5no/pg-builder",
+  "version": "1.2.0",
   "description": "Simple query builder for PostgreSQL",
   "main": "compiled/index.js",
   "scripts": {
@@ -22,7 +22,7 @@
     "param",
     "parameterized"
   ],
-  "homepage": "https://github.com/reb2020/5no-pg-builder#readme",
+  "homepage": "https://5no.io",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reb2020/5no-pg-builder.git"
