@@ -1,6 +1,6 @@
 const chai = require('chai')
 
-const Manager = require('../../compiled')
+const Manager = require('../../lib')
 
 const expect = chai.expect
 
