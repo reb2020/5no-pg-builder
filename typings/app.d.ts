@@ -161,7 +161,7 @@ export namespace FiveNoPgBuilder {
     [key: string]: Operation;
   }
 
-  type RowsHandler = <R extends {}>(rows: Array<R>, method?: string) => Array<R>;
+  type RowsHandler = <R extends {}>(rows: Array<R>, method?: string) => Array<R> | Promise<Array<R>>;
 
   interface Result {
     [key: string]: any;
