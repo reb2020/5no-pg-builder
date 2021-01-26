@@ -10,7 +10,7 @@ export namespace FiveNoPgBuilder {
     methods: Methods;
     operations: Operations;
     _initMethod: () => void;
-    _rowsHandler: <R>(rows: R[]) => Promise<unknown>;
+    _rowsHandler: <R extends {}>(rows: R[]) => Promise<R[]>;
     query: () => {
         query: string;
         vars: any[];
@@ -161,7 +161,7 @@ export namespace FiveNoPgBuilder {
     [key: string]: Operation;
   }
 
-  type RowsHandler = <R>(rows: Array<R>, method?: string) => Array<R>;
+  type RowsHandler = <R extends {}>(rows: Array<R>, method?: string) => Array<R>;
 
   interface Result {
     [key: string]: any;

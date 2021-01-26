@@ -65,7 +65,7 @@ class Builder {
     }
   }
 
-  _rowsHandler = <R>(rows: Array<R>) => new Promise((resolve, reject) => {
+  _rowsHandler = <R extends {}>(rows: Array<R>) => new Promise((resolve, reject) => {
     Promise.resolve(this.rowsHandler(rows, this.state.method)).then(resolve).catch(reject)
   })
 
